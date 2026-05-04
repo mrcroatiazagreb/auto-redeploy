@@ -1,9 +1,9 @@
 const https = require('https');
 
 const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
-const PROJECT_NAME = 'relay';
-const PROJECT_ID = 'prj_w1LAjflW53GP7vnHJdhUostzkKbs';
-const TEAM_ID = 'team_yAc50kblJMtpwpczBOHirWHO';
+const PROJECT_NAME = process.env.PROJECT_NAME || 'relay';
+const PROJECT_ID = process.env.PROJECT_ID || 'prj_w1LAjflW53GP7vnHJdhUostzkKbs';
+const INTERVAL_MINUTES = parseInt(process.env.INTERVAL_MINUTES) || 1;
 
 async function getLatestDeployment() {
   return new Promise((resolve, reject) => {
@@ -82,5 +82,7 @@ async function main() {
 // Run immediately
 main();
 
-// Then every 1 minute
-setInterval(main, 60 * 1000);
+// Then every X minutes (default: 1)
+setInterval(main, INTERVAL_MINUTES * 60 * 1000);
+
+console.log(`Auto-redeploy every ${INTERVAL_MINUTES} minute(s)`);
